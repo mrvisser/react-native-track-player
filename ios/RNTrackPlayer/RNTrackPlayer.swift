@@ -522,4 +522,20 @@ public class RNTrackPlayer: RCTEventEmitter {
         }
         resolve(NSNull())
     }
+    
+    @objc(duckOthers:rejecter:)
+    public func duckOthers(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        let instance = AVAudioSession.sharedInstance()
+        let nextOptions = instance.categoryOptions.subtracting([.duckOthers]).union([.mixWithOthers])
+        try? AVAudioSession.sharedInstance().setCategory(instance.category, mode: instance.mode, options: options)
+        resolve(NSNull())
+    }
+    
+    @objc(unduckOthers:rejecter:)
+    public func unduckOthers(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        let instance = AVAudioSession.sharedInstance()
+        let nextOptions = instance.categoryOptions.subtracting([.mixWithOthers]).union([.duckOthers])
+        try? AVAudioSession.sharedInstance().setCategory(instance.category, mode: instance.mode, options: options)
+        resolve(NSNull())
+    }
 }
