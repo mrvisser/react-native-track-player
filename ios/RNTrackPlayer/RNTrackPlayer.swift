@@ -526,7 +526,7 @@ public class RNTrackPlayer: RCTEventEmitter {
     @objc(duckOthers:rejecter:)
     public func duckOthers(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
         let instance = AVAudioSession.sharedInstance()
-        let nextOptions = instance.categoryOptions.subtracting([.duckOthers]).union([.mixWithOthers])
+        let nextOptions = instance.categoryOptions.subtracting([.mixWithOthers]).union([.duckOthers])
         try? AVAudioSession.sharedInstance().setCategory(instance.category, mode: instance.mode, options: nextOptions)
         resolve(NSNull())
     }
@@ -534,7 +534,7 @@ public class RNTrackPlayer: RCTEventEmitter {
     @objc(unduckOthers:rejecter:)
     public func unduckOthers(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
         let instance = AVAudioSession.sharedInstance()
-        let nextOptions = instance.categoryOptions.subtracting([.mixWithOthers]).union([.duckOthers])
+        let nextOptions = instance.categoryOptions.subtracting([.duckOthers]).union([.mixWithOthers])
         try? AVAudioSession.sharedInstance().setCategory(instance.category, mode: instance.mode, options: nextOptions)
         resolve(NSNull())
     }
