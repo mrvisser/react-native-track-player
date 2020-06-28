@@ -526,16 +526,24 @@ public class RNTrackPlayer: RCTEventEmitter {
     @objc(duckOthers:rejecter:)
     public func duckOthers(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
         let instance = AVAudioSession.sharedInstance()
-        let nextOptions = instance.categoryOptions.subtracting([.mixWithOthers]).union([.duckOthers])
-        try? AVAudioSession.sharedInstance().setCategory(instance.category, mode: instance.mode, options: nextOptions)
+        if !instance.categoryOptions.contains(.duckOthers) {
+            let nextOptions = instance.categoryOptions.subtracting([.mixWithOthers]).union([.duckOthers])
+            try? instance.setActive(false)
+            try? instance.setCategory(instance.category, mode: instance.mode, options: nextOptions)
+            try? instance.setActive(true)
+        }
         resolve(NSNull())
     }
     
     @objc(unduckOthers:rejecter:)
     public func unduckOthers(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
         let instance = AVAudioSession.sharedInstance()
-        let nextOptions = instance.categoryOptions.subtracting([.duckOthers]).union([.mixWithOthers])
-        try? AVAudioSession.sharedInstance().setCategory(instance.category, mode: instance.mode, options: nextOptions)
+        if instance.categoryOptions.contains(.duckOthers) {
+            let nextOptions = instance.categoryOptions.subtracting([.duckOthers]).union([.mixWithOthers])
+            try? instance.setActive(false)
+            try? instance.setCategory(instance.category, mode: instance.mode, options: nextOptions)
+            try? instance.setActive(true)
+        }
         resolve(NSNull())
     }
 }
